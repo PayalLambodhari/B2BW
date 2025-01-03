@@ -10,6 +10,8 @@ import androidx.navigation.NavController
 
 @Composable
 fun HomeScreen(navController: NavController) {
+
+
     // Layout for the Home Screen
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

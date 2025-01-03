@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             var isLoggedIn by rememberSaveable { mutableStateOf(false) }
             AppNavigator(isLoggedIn) {
-                isLoggedIn = true
+                isLoggedIn = false
             }
         }
     }
@@ -40,20 +40,38 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
         println("Proceeding to checkout with ${cart.size} items")
     }
 
-    if (isLoggedIn) {
+
         Scaffold(
             bottomBar = {
-                BottomNavigationBar(navController, cartItemCount)
+
+                    BottomNavigationBar(navController, cartItemCount)
+
             }
         ) { paddingValues ->
             NavHost(
                 navController = navController,
-                startDestination = Screen.Home.route,
+                startDestination = if(isLoggedIn)Screen.Home.route else Screen.Login.route,
                 modifier = Modifier.padding(paddingValues)
             ) {
+                composable(Screen.Login.route) {
+                    LoginScreen(navController, onLoginSuccess = {
+                        onLoginSuccess()
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Home.route) { inclusive = true }
+                        }
+                    })
+
+
+                }
                 composable(Screen.Home.route) {
                     HomeScreen(navController) // Pass navController to HomeScreen
                 }
+                composable(Screen.Shops.route) {
+
+
+
+                }
+
                 composable("foodShop") {
                     FoodShopScreen(navController, onAddToCart) // Pass onAddToCart to FoodShopScreen
                 }
@@ -71,12 +89,5 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
                 }
             }
         }
-    } else {
-        LoginScreen(navController, onLoginSuccess = {
-            onLoginSuccess()
-            navController.navigate(Screen.Home.route) {
-                popUpTo(Screen.Home.route) { inclusive = true }
-            }
-        })
     }
-}
+
