@@ -31,45 +31,53 @@ fun AppNavigator() {
         cartItemCount = cart.size
     }
 
-    if (isLoggedIn) {
-        // Main App Navigation with Bottom Navigation
-        Scaffold(
-            bottomBar = {
-                BottomNavigationBar(navController, cartItemCount)
+
+    // Main App Navigation with Bottom Navigation
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController, cartItemCount)
+        }
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = if(!isLoggedIn) {Screen.LogIn.route} else {Screen.Home.route},
+            modifier = androidx.compose.ui.Modifier.padding(paddingValues)
+        ) {
+            composable(Screen.LogIn.route) {
+                LoginScreen(navController = navController, onLoginSuccess = {
+                    isLoggedIn=true
+                    navController.navigate(Screen.Home.route)
+
+            })
             }
-        ) { paddingValues ->
-            NavHost(
-                navController = navController,
-                startDestination = Screen.Home.route,
-                modifier = androidx.compose.ui.Modifier.padding(paddingValues)
-            ) {
-                composable(Screen.Home.route) {
-                    HomeScreen(navController, cartItemCount)
-                }
-                composable(Screen.Shops.route) {
-                    ShopDetailScreen(shopName = "Shop Name", onAddToCart = onAddToCart)
-                }
-                composable(Screen.Cart.route) {
-                    CartScreen(navController, cartItemCount) { updatedCartItemCount ->
-                        cartItemCount = updatedCartItemCount as Int
-                    }/*{
+            composable(Screen.Home.route) {
+                HomeScreen(navController, cartItemCount)
+            }
+            composable(Screen.Shops.route) {
+                ShopDetailScreen(shopName = "Shop Name", onAddToCart = onAddToCart)
+            }
+            composable(Screen.Cart.route) {
+                CartScreen(navController, cartItemCount)
+                /*{
                         cart = emptyList()
                         cartItemCount = 0
                     }*/
-                }
-                composable(Screen.Profile.route) {
-                    ProfileScreen(navController)
-                }
             }
-
+            composable(Screen.Profile.route) {
+                ProfileScreen(navController)
+            }
         }
-    } else {
-        // Show Login Screen without Bottom Navigation
-        LoginScreen(navController = navController, onLoginSuccess = {
-            isLoggedIn=true
-            navController.navigate("home")
 
-        }) // Pass navController here
-
-        }
     }
+}
+
+
+
+
+
+        // Show Login Screen without Bottom Navigation
+
+
+
+
+
