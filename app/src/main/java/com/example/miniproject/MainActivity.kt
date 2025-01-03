@@ -4,13 +4,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
+// MainActivity where navigation happens
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +31,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// AppNavigator with routing logic
 @Composable
 fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     val navController: NavHostController = rememberNavController()
@@ -45,41 +54,28 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = if (isLoggedIn) Screen.Home.route else Screen.Login.route,
+            startDestination = if (isLoggedIn) "foodShop" else "login", // Adjust to your route logic
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable(Screen.Login.route) {
+            composable("login") {
                 LoginScreen(navController, onLoginSuccess = {
                     onLoginSuccess()
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Home.route) { inclusive = true }
+                    navController.navigate("home") {
+                        popUpTo("home") { inclusive = true }
                     }
                 })
             }
-            composable(Screen.SignUp.route) {
-                SignUpScreen(navController)
-            }
-            composable(Screen.Home.route) {
+            composable("home") {
                 HomeScreen(navController)
             }
-            composable(Screen.Shops.route) {
-                // Shops screen implementation
-            }
             composable("foodShop") {
+                // Pass the cart management functions to FoodShopScreen
                 FoodShopScreen(navController, onAddToCart)
             }
-            composable("clothesShop") {
-                ClothesShopScreen(navController, onAddToCart)
+            composable("cart") {
+                CartScreen(navController, onCheckout, cart)  // Pass cart information to CartScreen
             }
-            composable("vesselsShop") {
-                VesselsShopScreen(navController, onAddToCart)
-            }
-            composable(Screen.Cart.route) {
-                CartScreen(navController, onCheckout)
-            }
-            composable(Screen.Profile.route) {
-                ProfileScreen(navController)
-            }
+            // Add other screens as necessary
         }
     }
 }

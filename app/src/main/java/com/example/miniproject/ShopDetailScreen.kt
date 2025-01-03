@@ -15,16 +15,36 @@ data class Product(
     val id: Int,
     val name: String,
     val price: Double,
-    val description: String
+    val description: String,
+    val imageUrl: String // Ensure this is added
 )
+
 
 @Composable
 fun ShopDetailScreen(shopName: String, onAddToCart: (Product) -> Unit) {
     // Sample list of products for the shop
     val products = listOf(
-        Product(1, "Product 1", 10.0, "Description for product 1"),
-        Product(2, "Product 2", 15.0, "Description for product 2"),
-        Product(3, "Product 3", 20.0, "Description for product 3")
+        Product(
+            1,
+            "Product 1",
+            10.0,
+            "Description for product 1",
+            "https://via.placeholder.com/150"
+        ),
+        Product(
+            2,
+            "Product 2",
+            15.0,
+            "Description for product 2",
+            "https://via.placeholder.com/150"
+        ),
+        Product(
+            3,
+            "Product 3",
+            20.0,
+            "Description for product 3",
+            "https://via.placeholder.com/150"
+        )
     )
 
     Column(

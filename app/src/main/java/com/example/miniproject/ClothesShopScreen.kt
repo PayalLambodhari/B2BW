@@ -18,11 +18,17 @@ import androidx.navigation.NavHostController
 @Composable
 fun ClothesShopScreen(navController: NavHostController, onAddToCart: (Product) -> Unit) {
     val products = listOf(
-        Product(1, "T-shirt", 20.0, "Comfortable cotton T-shirt"),
-        Product(2, "Jeans", 40.0, "Classic blue jeans"),
-        Product(3, "Jacket", 60.0, "Stylish leather jacket"),
-        Product(4, "Shoes", 50.0, "Comfortable running shoes"),
-        Product(5, "Hat", 15.0, "Cool cap to protect from the sun")
+        Product(1, "T-shirt", 20.0, "Comfortable cotton T-shirt", "https://via.placeholder.com/150"),
+        Product(2, "Jeans", 40.0, "Classic blue jeans", "https://via.placeholder.com/150"),
+        Product(3, "Jacket", 60.0, "Stylish leather jacket", "https://via.placeholder.com/150"),
+        Product(4, "Shoes", 50.0, "Comfortable running shoes", "https://via.placeholder.com/150"),
+        Product(
+            5,
+            "Hat",
+            15.0,
+            "Cool cap to protect from the sun",
+            "https://via.placeholder.com/150"
+        )
     )
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

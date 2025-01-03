@@ -21,11 +21,11 @@ import androidx.navigation.NavController
 @Composable
 fun VesselsShopScreen(navController: NavController, onAddToCart: (Product) -> Unit) {
     val products = listOf(
-        Product(1, "Plate", 5.0, "Ceramic dinner plate"),
-        Product(2, "Cup", 3.0, "Ceramic coffee cup"),
-        Product(3, "Bowl", 8.0, "Small soup bowl"),
-        Product(4, "Teapot", 12.0, "Traditional teapot"),
-        Product(5, "Glass", 2.0, "Transparent drinking glass")
+        Product(1, "Plate", 5.0, "Ceramic dinner plate", "https://via.placeholder.com/150"),
+        Product(2, "Cup", 3.0, "Ceramic coffee cup", "https://via.placeholder.com/150"),
+        Product(3, "Bowl", 8.0, "Small soup bowl", "https://via.placeholder.com/150"),
+        Product(4, "Teapot", 12.0, "Traditional teapot", "https://via.placeholder.com/150"),
+        Product(5, "Glass", 2.0, "Transparent drinking glass", "https://via.placeholder.com/150")
     )
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

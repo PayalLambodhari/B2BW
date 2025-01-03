@@ -17,14 +17,9 @@ import androidx.navigation.NavHostController
 @Composable
 fun CartScreen(
     navController: NavHostController,
-    onCheckout: () -> Unit
+    onCheckout: () -> Unit,
+    cart: List<Product>  // Receive the cart list
 ) {
-    val cartItemCount = navController
-        .currentBackStackEntry
-        ?.arguments
-        ?.getString("cartItemCount")
-        ?.toIntOrNull() ?: 0
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,13 +33,13 @@ fun CartScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (cartItemCount > 0) {
-            Text("Items in Cart: $cartItemCount")
+        if (cart.isNotEmpty()) {
+            Text("Items in Cart: ${cart.size}")
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Placeholder for cart items
-            repeat(cartItemCount) {
-                Text("Item ${it + 1} - $10")
+            // Display cart items
+            cart.forEach { product ->
+                Text("${product.name} - $${product.price}")
             }
         } else {
             Text("Your cart is empty")
@@ -55,9 +50,9 @@ fun CartScreen(
         Button(
             onClick = {
                 onCheckout()
-                navController.popBackStack()
+                navController.popBackStack()  // Navigate back after checkout
             },
-            enabled = cartItemCount > 0  // Disable if cart is empty
+            enabled = cart.isNotEmpty()  // Enable if cart has items
         ) {
             Text("Checkout")
         }

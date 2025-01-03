@@ -77,5 +77,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.material3)
     implementation(libs.androidx.activity.compose.v172)
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
 
 }
