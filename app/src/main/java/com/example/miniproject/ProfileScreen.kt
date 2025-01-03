@@ -7,11 +7,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 
 @Composable
-fun ProfileScreen(navController: NavHostController) {
-    Column(modifier = Modifier.fillMaxSize()) {
+fun ProfileScreen(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         Text(
             text = "Profile Information",
             fontSize = 24.sp,
@@ -20,7 +24,14 @@ fun ProfileScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Add more profile info or settings here
         Text("Name: John Doe")
         Text("Email: johndoe@example.com")
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            navController.navigate("settingsScreen") // Navigate to a settings screen
+        }) {
+            Text("Settings")
+        }
     }
 }

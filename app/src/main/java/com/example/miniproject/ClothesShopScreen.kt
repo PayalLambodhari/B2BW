@@ -2,16 +2,7 @@ package com.example.miniproject
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Button
@@ -21,17 +12,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.compose.ui.Alignment
+import androidx.navigation.NavHostController
 
 @Composable
-fun ClothesShopScreen(navController: NavController) {
-    val products = listOf("T-shirt", "Jeans", "Jacket", "Shoes", "Hat")
+fun ClothesShopScreen(navController: NavHostController, onAddToCart: (Product) -> Unit) {
+    val products = listOf(
+        Product(1, "T-shirt", 20.0, "Comfortable cotton T-shirt"),
+        Product(2, "Jeans", 40.0, "Classic blue jeans"),
+        Product(3, "Jacket", 60.0, "Stylish leather jacket"),
+        Product(4, "Shoes", 50.0, "Comfortable running shoes"),
+        Product(5, "Hat", 15.0, "Cool cap to protect from the sun")
+    )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text(
             "Welcome to Clothes Shop",
             style = MaterialTheme.typography.headlineMedium,
@@ -45,31 +39,30 @@ fun ClothesShopScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(products.size) { index ->
-                ProductCard(productName = products[index]) {
-                    // Navigate to cart and pass item info
-                    navController.navigate("cart?cartItemCount=1")
-                }
+                ProductCard(product = products[index], onAddToCart = onAddToCart)
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Button to navigate to Cart
         Button(onClick = { navController.navigate("cart") }) {
             Text("Go to Cart")
         }
     }
 }
+
 @Composable
-fun ProductCard(productName: String, onAddToCart: () -> Unit) {
+fun ProductCard(product: Product, onAddToCart: (Product) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onAddToCart() }
+            .clickable { onAddToCart(product) }
             .padding(8.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Placeholder Box instead of Image
             Box(
@@ -80,11 +73,15 @@ fun ProductCard(productName: String, onAddToCart: () -> Unit) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(productName, style = MaterialTheme.typography.titleMedium)
+            Text(product.name, style = MaterialTheme.typography.titleMedium)
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Button(onClick = onAddToCart) {
+            Text("Price: \$${product.price}")
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(onClick = { onAddToCart(product) }) {
                 Text("Add to Cart")
             }
         }

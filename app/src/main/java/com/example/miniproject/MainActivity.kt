@@ -6,23 +6,26 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-
+import androidx.compose.ui.Modifier
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppNavigator()
+            var isLoggedIn by rememberSaveable { mutableStateOf(false) }
+            AppNavigator(isLoggedIn) {
+                isLoggedIn = false
+            }
         }
     }
 }
 
 @Composable
-fun AppNavigator() {
+fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     val navController: NavHostController = rememberNavController()
-    var isLoggedIn by remember { mutableStateOf(false) }
     var cartItemCount by remember { mutableIntStateOf(0) }
     var cart by remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -31,53 +34,60 @@ fun AppNavigator() {
         cartItemCount = cart.size
     }
 
-
-    // Main App Navigation with Bottom Navigation
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(navController, cartItemCount)
-        }
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = if(!isLoggedIn) {Screen.LogIn.route} else {Screen.Home.route},
-            modifier = androidx.compose.ui.Modifier.padding(paddingValues)
-        ) {
-            composable(Screen.LogIn.route) {
-                LoginScreen(navController = navController, onLoginSuccess = {
-                    isLoggedIn=true
-                    navController.navigate(Screen.Home.route)
-
-            })
-            }
-            composable(Screen.Home.route) {
-                HomeScreen(navController, cartItemCount)
-            }
-            composable(Screen.Shops.route) {
-                ShopDetailScreen(shopName = "Shop Name", onAddToCart = onAddToCart)
-            }
-            composable(Screen.Cart.route) {
-                CartScreen(navController, cartItemCount)
-                /*{
-                        cart = emptyList()
-                        cartItemCount = 0
-                    }*/
-            }
-            composable(Screen.Profile.route) {
-                ProfileScreen(navController)
-            }
-        }
-
+    // Mock checkout function
+    val onCheckout: () -> Unit = {
+        // Implement your checkout logic here
+        println("Proceeding to checkout with ${cart.size} items")
     }
-}
+
+
+        Scaffold(
+            bottomBar = {
+
+                    BottomNavigationBar(navController, cartItemCount)
+
+            }
+        ) { paddingValues ->
+            NavHost(
+                navController = navController,
+                startDestination = if(isLoggedIn)Screen.Home.route else Screen.Login.route,
+                modifier = Modifier.padding(paddingValues)
+            ) {
+                composable(Screen.Login.route) {
+                    LoginScreen(navController, onLoginSuccess = {
+                        onLoginSuccess()
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Home.route) { inclusive = true }
+                        }
+                    })
+
+
+                }
+                composable(Screen.Home.route) {
+                    HomeScreen(navController) // Pass navController to HomeScreen
+                }
+                composable(Screen.Shops.route) {
 
 
 
+                }
 
-
-        // Show Login Screen without Bottom Navigation
-
-
-
-
+                composable("foodShop") {
+                    FoodShopScreen(navController, onAddToCart) // Pass onAddToCart to FoodShopScreen
+                }
+                composable("clothesShop") {
+                    ClothesShopScreen(navController, onAddToCart) // Pass onAddToCart to ClothesShopScreen
+                }
+                composable("vesselsShop") {
+                    VesselsShopScreen(navController, onAddToCart) // Pass onAddToCart to VesselsShopScreen
+                }
+                composable(Screen.Cart.route) {
+                    CartScreen(navController, onCheckout) // Pass onCheckout to CartScreen
+                }
+                composable(Screen.Profile.route) {
+                    ProfileScreen(navController)
+                }
+            }
+        }
+    }
 
