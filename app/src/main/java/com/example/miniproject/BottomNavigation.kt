@@ -17,6 +17,7 @@ fun BottomNavigationBar(navController: NavController, cartItemCount: Int) {
                 selected = currentRoute == route,
                 onClick = {
                     navController.navigate(route) {
+                        // Preserve state and ensure navigating works smoothly
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }

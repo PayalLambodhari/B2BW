@@ -1,6 +1,7 @@
 package com.example.miniproject
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background // Import added here
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -57,13 +58,29 @@ fun FoodShopScreen(navController: NavHostController, onAddToCart: (Product) -> U
         )
     )
 
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(foodItems) { product ->
-            FoodItemCard(product = product, onAddToCart = onAddToCart, navController = navController)
+        // Welcome Message
+        Text(
+            text = "Welcome to the Food Shop!",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFFFFC107), // Yellow color
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+        )
+
+        // Display the food items
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(foodItems) { product ->
+                FoodItemCard(product = product, onAddToCart = onAddToCart, navController = navController)
+            }
         }
     }
 }
@@ -74,6 +91,8 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp)
+            .background(Color(0xFFF1F1F1), shape = RoundedCornerShape(12.dp)) // Background applied here
+            .padding(16.dp)
     ) {
         Image(
             painter = rememberAsyncImagePainter(product.imageUrl),
@@ -85,7 +104,7 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
 
         Text(
             text = product.name,
-            fontSize = 32.sp,
+            fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF424242),
             modifier = Modifier.padding(bottom = 8.dp)
@@ -93,9 +112,9 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
 
         Text(
             text = "$${product.price}",
-            fontSize = 24.sp,
+            fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFFFFC107),
+            color = Color(0xFFFFC107), // Price in yellow color
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -111,9 +130,11 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
                 onAddToCart(product)
                 navController.navigate("cart")
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)),
-            shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.fillMaxWidth(0.8f)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)), // Yellow button
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
         ) {
             Text("Add to Cart", fontSize = 18.sp, color = Color.White)
         }
