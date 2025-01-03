@@ -19,42 +19,41 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun FoodShopScreen(navController: NavHostController, onAddToCart: (Product) -> Unit) {
-    // List of food products with updated image URLs
     val foodItems = listOf(
         Product(
             id = 1,
             name = "Pizza",
             price = 10.0,
             description = "Delicious cheesy pizza with a variety of toppings.",
-            imageUrl = "https://images.unsplash.com/photo-1571091718767-18b5b1457add"  // Pizza Image
+            imageUrl = "https://media.istockphoto.com/id/1442417585/photo/person-getting-a-piece-of-cheesy-pepperoni-pizza.webp?a=1&b=1&s=612x612&w=0&k=20&c=akEIJdrYnU1_iDZjvZyNdQ7CsYLuz8NTYnjCxT3UA4g=" // Pizza
         ),
         Product(
             id = 2,
             name = "Burger",
             price = 8.0,
             description = "Juicy beef burger with crispy lettuce and cheese.",
-            imageUrl = "https://images.unsplash.com/photo-1550547660-d9450f859349"  // Burger Image
+            imageUrl = "https://media.istockphoto.com/id/998309062/photo/burger-with-beef-and-cheese.webp?a=1&b=1&s=612x612&w=0&k=20&c=hthCHhBsUotyv4SCP8MdltTNv1bT6g5R9NIB1fufva0=" // Burger
         ),
         Product(
             id = 3,
             name = "Pasta",
             price = 12.0,
             description = "Creamy pasta with fresh basil and parmesan.",
-            imageUrl = "https://images.unsplash.com/photo-1589302168068-964664d93dc0"  // Pasta Image
+            imageUrl = "https://media.istockphoto.com/id/482964545/photo/arrabiata-pasta.webp?a=1&b=1&s=612x612&w=0&k=20&c=WgBDLDed6qro4H1gamjxl5hWALBdXm6T0UGSU3d6TRo=" // Pasta
         ),
         Product(
             id = 4,
             name = "Sushi",
             price = 15.0,
             description = "Fresh sushi rolls with fish, avocado, and wasabi.",
-            imageUrl = "https://images.unsplash.com/photo-1606787366850-de6330128bfc"  // Sushi Image
+            imageUrl = "https://media.istockphoto.com/id/1214109373/photo/elegant-japanese-dinner-with-sushi-maki.webp?a=1&b=1&s=612x612&w=0&k=20&c=NOGQIS5xeUYeniCIR1JohATI8SHzwLeI7DfEzbzc84A=" // Sushi
         ),
         Product(
             id = 5,
             name = "Salad",
             price = 7.0,
             description = "Healthy mixed greens with vinaigrette dressing.",
-            imageUrl = "https://images.unsplash.com/photo-1512621776951-a57141f2eefd"  // Salad Image
+            imageUrl = "https://media.istockphoto.com/id/683296492/photo/roasted-sweet-potatoes-wedges-with-guacamole-and-kidney-beans.webp?a=1&b=1&s=612x612&w=0&k=20&c=ubFY9t8WXsQkzA4nzNjH7oa12CVZFSwmCeSR5YIWinU=" // Salad
         )
     )
 
@@ -74,18 +73,16 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 24.dp)
+            .padding(bottom = 16.dp)
     ) {
-        // Product image
         Image(
             painter = rememberAsyncImagePainter(product.imageUrl),
             contentDescription = product.name,
             modifier = Modifier
-                .size(300.dp)
+                .size(250.dp)
                 .padding(bottom = 16.dp)
         )
 
-        // Product name
         Text(
             text = product.name,
             fontSize = 32.sp,
@@ -94,7 +91,6 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // Product price
         Text(
             text = "$${product.price}",
             fontSize = 24.sp,
@@ -103,7 +99,6 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // Product description
         Text(
             text = product.description,
             fontSize = 16.sp,
@@ -111,15 +106,14 @@ fun FoodItemCard(product: Product, onAddToCart: (Product) -> Unit, navController
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Add to Cart button
         Button(
             onClick = {
-                onAddToCart(product)  // Add product to cart
-                navController.navigate("cart")  // Navigate to Cart screen
+                onAddToCart(product)
+                navController.navigate("cart")
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFC107)),
             shape = RoundedCornerShape(16.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(0.8f)
         ) {
             Text("Add to Cart", fontSize = 18.sp, color = Color.White)
         }
