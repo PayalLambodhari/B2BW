@@ -34,60 +34,52 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
         cartItemCount = cart.size
     }
 
-    // Mock checkout function
     val onCheckout: () -> Unit = {
-        // Implement your checkout logic here
         println("Proceeding to checkout with ${cart.size} items")
     }
 
-
-        Scaffold(
-            bottomBar = {
-
-                    BottomNavigationBar(navController, cartItemCount)
-
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController, cartItemCount)
+        }
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = if (isLoggedIn) Screen.Home.route else Screen.Login.route,
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            composable(Screen.Login.route) {
+                LoginScreen(navController, onLoginSuccess = {
+                    onLoginSuccess()
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Home.route) { inclusive = true }
+                    }
+                })
             }
-        ) { paddingValues ->
-            NavHost(
-                navController = navController,
-                startDestination = if(isLoggedIn)Screen.Home.route else Screen.Login.route,
-                modifier = Modifier.padding(paddingValues)
-            ) {
-                composable(Screen.Login.route) {
-                    LoginScreen(navController, onLoginSuccess = {
-                        onLoginSuccess()
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(Screen.Home.route) { inclusive = true }
-                        }
-                    })
-
-
-                }
-                composable(Screen.Home.route) {
-                    HomeScreen(navController) // Pass navController to HomeScreen
-                }
-                composable(Screen.Shops.route) {
-
-
-
-                }
-
-                composable("foodShop") {
-                    FoodShopScreen(navController, onAddToCart) // Pass onAddToCart to FoodShopScreen
-                }
-                composable("clothesShop") {
-                    ClothesShopScreen(navController, onAddToCart) // Pass onAddToCart to ClothesShopScreen
-                }
-                composable("vesselsShop") {
-                    VesselsShopScreen(navController, onAddToCart) // Pass onAddToCart to VesselsShopScreen
-                }
-                composable(Screen.Cart.route) {
-                    CartScreen(navController, onCheckout) // Pass onCheckout to CartScreen
-                }
-                composable(Screen.Profile.route) {
-                    ProfileScreen(navController)
-                }
+            composable(Screen.SignUp.route) {
+                SignUpScreen(navController)
+            }
+            composable(Screen.Home.route) {
+                HomeScreen(navController)
+            }
+            composable(Screen.Shops.route) {
+                // Shops screen implementation
+            }
+            composable("foodShop") {
+                FoodShopScreen(navController, onAddToCart)
+            }
+            composable("clothesShop") {
+                ClothesShopScreen(navController, onAddToCart)
+            }
+            composable("vesselsShop") {
+                VesselsShopScreen(navController, onAddToCart)
+            }
+            composable(Screen.Cart.route) {
+                CartScreen(navController, onCheckout)
+            }
+            composable(Screen.Profile.route) {
+                ProfileScreen(navController)
             }
         }
     }
-
+}
