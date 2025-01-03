@@ -1,19 +1,24 @@
 package com.example.miniproject
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 
 @Composable
 fun CartScreen(
-    navController: NavHostController, /*onCheckout: () -> Unit*/
-    cartItemCount: Int,
-    param: (Any) -> Unit, ) {
+    navController: NavHostController,
+    onCheckout: () -> Unit
+) {
     val cartItemCount = navController
         .currentBackStackEntry
         ?.arguments
@@ -49,7 +54,7 @@ fun CartScreen(
 
         Button(
             onClick = {
-               /* onCheckout()*/
+                onCheckout()
                 navController.popBackStack()
             },
             enabled = cartItemCount > 0  // Disable if cart is empty

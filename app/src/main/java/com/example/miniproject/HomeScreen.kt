@@ -1,45 +1,38 @@
 package com.example.miniproject
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
-    var cartItemCount by remember { mutableIntStateOf(0) }
-
-    NavHost(navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen(navController = navController) {
-                navController.navigate("home") {
-                    popUpTo("login") { inclusive = true }
-                }
-            }
+fun HomeScreen(navController: NavController) {
+    // Layout for the Home Screen
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Button for Food Shop
+        Button(onClick = { navController.navigate("foodShop") }) {
+            Text("Food Shop")
         }
 
-        composable("home") { HomeScreen(navController, cartItemCount) }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        composable("cart") {
-            CartScreen(navController, cartItemCount) { updatedCartItemCount ->
-                cartItemCount = updatedCartItemCount as Int
-            }
+        // Button for Clothes Shop
+        Button(onClick = { navController.navigate("clothesShop") }) {
+            Text("Clothes Shop")
         }
 
-        composable("profile") { ProfileScreen(navController) }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        composable("foodShop") { FoodShopScreen(navController) }
-        composable("clothesShop") { ClothesShopScreen(navController) }
-        composable("vesselsShop") { VesselsShopScreen(navController) }
+        // Button for Vessels Shop
+        Button(onClick = { navController.navigate("vesselsShop") }) {
+            Text("Vessels Shop")
+        }
     }
-}
-
-@Composable
-fun <NavHostController> HomeScreen(navController: NavHostController, cartItemCount: Int) {
-
 }

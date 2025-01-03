@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-// Correct imports for navigation
+import androidx.compose.ui.Modifier
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +34,12 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
         cartItemCount = cart.size
     }
 
+    // Mock checkout function
+    val onCheckout: () -> Unit = {
+        // Implement your checkout logic here
+        println("Proceeding to checkout with ${cart.size} items")
+    }
+
     if (isLoggedIn) {
         Scaffold(
             bottomBar = {
@@ -43,18 +49,22 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
             NavHost(
                 navController = navController,
                 startDestination = Screen.Home.route,
-                modifier = androidx.compose.ui.Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues)
             ) {
                 composable(Screen.Home.route) {
-                    HomeScreen(navController, cartItemCount)
+                    HomeScreen(navController) // Pass navController to HomeScreen
                 }
-                composable(Screen.Shops.route) {
-                    ShopDetailScreen(shopName = "Shop Name", onAddToCart = onAddToCart)
+                composable("foodShop") {
+                    FoodShopScreen(navController, onAddToCart) // Pass onAddToCart to FoodShopScreen
+                }
+                composable("clothesShop") {
+                    ClothesShopScreen(navController, onAddToCart) // Pass onAddToCart to ClothesShopScreen
+                }
+                composable("vesselsShop") {
+                    VesselsShopScreen(navController, onAddToCart) // Pass onAddToCart to VesselsShopScreen
                 }
                 composable(Screen.Cart.route) {
-                    CartScreen(navController, cartItemCount) { updatedCartItemCount ->
-                        cartItemCount = updatedCartItemCount as Int
-                    }
+                    CartScreen(navController, onCheckout) // Pass onCheckout to CartScreen
                 }
                 composable(Screen.Profile.route) {
                     ProfileScreen(navController)
@@ -69,12 +79,4 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
             }
         })
     }
-}
-
-fun navHost(navController: NavHostController, startDestination: String, modifier: Unit, function: () -> Unit) {
-
-}
-
-fun composable(route: String, function: @Composable () -> Unit) {
-
 }
