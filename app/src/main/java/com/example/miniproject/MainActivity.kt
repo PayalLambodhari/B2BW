@@ -6,23 +6,26 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-
+// Correct imports for navigation
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppNavigator()
+            var isLoggedIn by rememberSaveable { mutableStateOf(false) }
+            AppNavigator(isLoggedIn) {
+                isLoggedIn = true
+            }
         }
     }
 }
 
 @Composable
-fun AppNavigator() {
+fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     val navController: NavHostController = rememberNavController()
-    var isLoggedIn by remember { mutableStateOf(false) }
     var cartItemCount by remember { mutableIntStateOf(0) }
     var cart by remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -32,7 +35,6 @@ fun AppNavigator() {
     }
 
     if (isLoggedIn) {
-        // Main App Navigation with Bottom Navigation
         Scaffold(
             bottomBar = {
                 BottomNavigationBar(navController, cartItemCount)
@@ -52,24 +54,27 @@ fun AppNavigator() {
                 composable(Screen.Cart.route) {
                     CartScreen(navController, cartItemCount) { updatedCartItemCount ->
                         cartItemCount = updatedCartItemCount as Int
-                    }/*{
-                        cart = emptyList()
-                        cartItemCount = 0
-                    }*/
+                    }
                 }
                 composable(Screen.Profile.route) {
                     ProfileScreen(navController)
                 }
             }
-
         }
     } else {
-        // Show Login Screen without Bottom Navigation
-        LoginScreen(navController = navController, onLoginSuccess = {
-            isLoggedIn=true
-            navController.navigate("home")
-
-        }) // Pass navController here
-
-        }
+        LoginScreen(navController, onLoginSuccess = {
+            onLoginSuccess()
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Home.route) { inclusive = true }
+            }
+        })
     }
+}
+
+fun navHost(navController: NavHostController, startDestination: String, modifier: Unit, function: () -> Unit) {
+
+}
+
+fun composable(route: String, function: @Composable () -> Unit) {
+
+}

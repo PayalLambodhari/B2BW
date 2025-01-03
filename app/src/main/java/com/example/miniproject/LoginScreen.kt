@@ -1,19 +1,9 @@
 package com.example.miniproject
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,12 +31,14 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
                 color = Color(0xFF6A1B9A),
                 modifier = Modifier.padding(bottom = 32.dp)
             )
+
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 modifier = Modifier.padding(bottom = 16.dp)
             )
+
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -58,7 +50,11 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             Button(
                 onClick = {
                     if (email.trim() == "user@example.com" && password.trim() == "password") {
-                        onLoginSuccess()  // Navigate to Home
+                        showError = false
+                        onLoginSuccess()  // Update login state in MainActivity
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Home.route) { inclusive = true }  // Clear login from backstack
+                        }
                     } else {
                         showError = true
                     }

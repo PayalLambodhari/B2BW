@@ -1,66 +1,45 @@
 package com.example.miniproject
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, cartItemCount: Int) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("Welcome to Home, Enjoy Shopping")
+fun AppNavigation() {
+    val navController = rememberNavController()
+    var cartItemCount by remember { mutableIntStateOf(0) }
+
+    NavHost(navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(navController = navController) {
+                navController.navigate("home") {
+                    popUpTo("login") { inclusive = true }
                 }
-            )
-        },
-        bottomBar = {
-            BottomNavigationBar(navController, cartItemCount)
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Select a Shop",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(onClick = { navController.navigate("foodShop") }) {
-                Text("Food Shop")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(onClick = { navController.navigate("clothesShop") }) {
-                Text("Clothes Shop")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(onClick = { navController.navigate("vesselsShop") }) {
-                Text("Vessels Shop")
-            }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Button(onClick = {
-                navController.navigate(Screen.Cart.route)
-            }) {
-                Text("Go to Cart (${cartItemCount})")
             }
         }
+
+        composable("home") { HomeScreen(navController, cartItemCount) }
+
+        composable("cart") {
+            CartScreen(navController, cartItemCount) { updatedCartItemCount ->
+                cartItemCount = updatedCartItemCount as Int
+            }
+        }
+
+        composable("profile") { ProfileScreen(navController) }
+
+        composable("foodShop") { FoodShopScreen(navController) }
+        composable("clothesShop") { ClothesShopScreen(navController) }
+        composable("vesselsShop") { VesselsShopScreen(navController) }
     }
+}
+
+@Composable
+fun <NavHostController> HomeScreen(navController: NavHostController, cartItemCount: Int) {
+
 }
