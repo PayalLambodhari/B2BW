@@ -17,6 +17,7 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }
+var isValid by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -49,7 +50,9 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
 
             Button(
                 onClick = {
-                    if (email.trim() == "user@example.com" && password.trim() == "password") {
+                    isValid = isValidCredentials(email, password)
+                    if (/*email.trim() == "user@example.com" && password.trim() == "password"*/
+                    isValid) {
                         showError = false
                         onLoginSuccess()  // Update login state in MainActivity
                         navController.navigate(Screen.Home.route) {
@@ -74,4 +77,10 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             }
         }
     }
+}
+
+private fun isValidCredentials(email: String, password: String): Boolean {
+    val emailPattern = Regex("[a-zA-Z0–9._-]+@[a-z]+\\.+[a-z]+")
+    val passwordPattern = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
+    return emailPattern.matches(email)&& password.length>7
 }
