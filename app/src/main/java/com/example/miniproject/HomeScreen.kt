@@ -75,9 +75,9 @@ fun HomeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Vessels Shop Button
+            // Vessels Shop Button in HomeScreen
             Button(
-                onClick = { navController.navigate("vesselsShop") },
+                onClick = { navController.navigate("vessels") },  // Change "vesselsShop" to "vessels"
                 colors = ButtonDefaults.buttonColors(containerColor = goldenYellow),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
@@ -88,6 +88,7 @@ fun HomeScreen(navController: NavController) {
             ) {
                 Text("Vessels Shop", fontSize = 18.sp)
             }
+
 
             Spacer(modifier = Modifier.height(32.dp))
 

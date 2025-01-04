@@ -50,7 +50,7 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = if (isLoggedIn) "home" else "login",  // Updated to "home" route
+            startDestination = if (isLoggedIn) "home" else "login",  // Start from the home route after login
             modifier = Modifier.padding(paddingValues)
         ) {
             composable("login") {
@@ -71,6 +71,10 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
             composable("clothesShop") {
                 // Clothes Shop Screen
                 ClothesShopScreen(navController, onAddToCart)
+            }
+            composable("vessels") {
+                // Vessels Shop Screen
+                VesselsShopScreen(navController = navController, onAddToCart = onAddToCart)
             }
             composable("cart") {
                 // Cart Screen
