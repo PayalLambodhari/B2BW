@@ -23,6 +23,7 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     var showError by remember { mutableStateOf(false) }
+    var isValid by remember { mutableStateOf(false) }
 
     val goldenYellow = Color(0xFFFFD700)
     val inputFieldColor = Color.White
@@ -119,7 +120,9 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
                     // Login Button
                     Button(
                         onClick = {
-                            if (email.trim() == "user@example.com" && password.trim() == "password") {
+                            isValid = isValidCredentials(email, password)
+                            if (/*email.trim() == "user@example.com" && password.trim() == "password"*/
+                            isValid) {
                                 showError = false
                                 onLoginSuccess()
                                 navController.navigate(Screen.Home.route) {
@@ -156,4 +159,9 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
             }
         }
     }
+}
+private fun isValidCredentials(email: String, password: String): Boolean {
+    val emailPattern = Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
+    val passwordPattern = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")
+    return emailPattern.matches(email) && passwordPattern.matches(password)
 }
