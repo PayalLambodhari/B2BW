@@ -15,7 +15,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController,
+               cartItemCount:Int) {
     val goldenYellow = Color(0xFFFFD700)
     val gradient = Brush.verticalGradient(
         colors = listOf(Color(0xFFFFE57F), Color(0xFFFFC107)),
@@ -23,11 +24,18 @@ fun HomeScreen(navController: NavController) {
         endY = 1000f
     )
 
-    // Layout for the Home Screen
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController = navController, cartItemCount = cartItemCount)
+        }
+    ) { paddingValues->
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(gradient),
+            .background(gradient)
+            .padding(paddingValues),
+
+
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -118,4 +126,5 @@ fun HomeScreen(navController: NavController) {
             )
         }
     }
+}
 }

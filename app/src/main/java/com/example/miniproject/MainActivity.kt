@@ -44,9 +44,9 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     }
 
     Scaffold(
-        bottomBar = {
+      /*  bottomBar = {
             BottomNavigationBar(navController, cartItemCount)
-        }
+        }*/
     ) { paddingValues ->
         NavHost(
             navController = navController,
@@ -62,7 +62,7 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
                 })
             }
             composable("home") {
-                HomeScreen(navController)
+                HomeScreen(navController,cartItemCount)
             }
             composable("foodShop") {
                 // Food Shop Screen

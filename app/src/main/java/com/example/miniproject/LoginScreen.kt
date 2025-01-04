@@ -153,7 +153,7 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     TextButton(onClick = { navController.navigate(Screen.SignUp.route) }) {
-                        Text("Don't have an account? Sign up", color = goldenYellow)
+                        Text("Don't have an account? Sign up", color = Color.Black)
                     }
                 }
             }

@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 @Composable
 fun BottomNavigationBar(navController: NavController, cartItemCount: Int) {
     val currentRoute = navController.currentDestination?.route
-    val navItems = listOf("home", "shops", "cart", "profile")
+    val navItems = listOf("home","cart", "profile")
 
     NavigationBar {
         navItems.forEachIndexed { _, route ->
@@ -31,10 +31,10 @@ fun BottomNavigationBar(navController: NavController, cartItemCount: Int) {
                             painter = painterResource(id = R.drawable.baseline_add_home_24),
                             contentDescription = "Home"
                         )
-                        "shops" -> Icon(
+                       /* "shops" -> Icon(
                             painter = painterResource(id = R.drawable.baseline_add_card_24),
                             contentDescription = "Shops"
-                        )
+                        )*/
                         "cart" -> BadgedBox(badge = {
                             if (cartItemCount > 0) {
                                 Badge { Text("$cartItemCount") }
