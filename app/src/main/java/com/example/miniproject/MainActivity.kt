@@ -3,11 +3,8 @@ package com.example.miniproject
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -39,8 +36,15 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
         cartItemCount = cart.size
     }
 
+    val onRemoveFromCart: (Product) -> Unit = { product ->
+        cart = cart.filter { it.id != product.id }
+        cartItemCount = cart.size
+    }
+
     val onCheckout: () -> Unit = {
         println("Proceeding to checkout with ${cart.size} items")
+        cart = emptyList()  // Clear cart after checkout
+        cartItemCount = 0
     }
 
     Scaffold(
@@ -50,7 +54,7 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = if (isLoggedIn) "home" else "login",  // Start from the home route after login
+            startDestination = if (isLoggedIn) "home" else "login",
             modifier = Modifier.padding(paddingValues)
         ) {
             composable("login") {
@@ -65,36 +69,33 @@ fun AppNavigator(isLoggedIn: Boolean, onLoginSuccess: () -> Unit) {
                 HomeScreen(navController,cartItemCount)
             }
             composable("foodShop") {
-                // Food Shop Screen
                 FoodShopScreen(navController, onAddToCart)
             }
             composable("clothesShop") {
-                // Clothes Shop Screen
                 ClothesShopScreen(navController, onAddToCart)
             }
             composable("vessels") {
-                // Vessels Shop Screen
                 VesselsShopScreen(navController = navController, onAddToCart = onAddToCart)
             }
+            composable("signUp") {
+                SignUpScreen(navController)
+            }
             composable("cart") {
-                // Cart Screen
-                CartScreen(navController, onCheckout, cart)
+                CartScreen(
+                    navController = navController,
+                    onCheckout = onCheckout,
+                    cart = cart,
+                    onRemoveFromCart = onRemoveFromCart
+                )
             }
             composable("profile") {
-                // Profile Screen
-                ProfileScreen(navController)
+                ProfileScreen(navController, onLogout = {
+                    onLoginSuccess()
+                    navController.navigate("login") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                })
             }
-        }
-    }
-}
-
-// Example ProfileScreen
-@Composable
-fun ProfileScreen(navController: NavHostController) {
-    Column {
-        Text(text = "Profile Screen")
-        Button(onClick = { navController.navigate("home") }) {
-            Text("Go to Home")
         }
     }
 }

@@ -11,13 +11,13 @@ fun BottomNavigationBar(navController: NavController, cartItemCount: Int) {
     val navItems = listOf("home","cart", "profile")
 
     NavigationBar {
-        navItems.forEachIndexed { _, route ->
+        navItems.forEach { route ->
             NavigationBarItem(
                 label = { Text(route.replaceFirstChar { it.uppercase() }) },
                 selected = currentRoute == route,
                 onClick = {
                     navController.navigate(route) {
-                        // Preserve state and ensure navigating works smoothly
+                        // Ensure smooth navigation
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
@@ -28,11 +28,11 @@ fun BottomNavigationBar(navController: NavController, cartItemCount: Int) {
                 icon = {
                     when (route) {
                         "home" -> Icon(
-                            painter = painterResource(id = R.drawable.baseline_add_home_24),
+                            painter = painterResource(id = R.drawable.baseline_add_home_24), // Replace with actual icon
                             contentDescription = "Home"
                         )
                        /* "shops" -> Icon(
-                            painter = painterResource(id = R.drawable.baseline_add_card_24),
+                            painter = painterResource(id = R.drawable.baseline_add_card_24), // Replace with actual icon
                             contentDescription = "Shops"
                         )*/
                         "cart" -> BadgedBox(badge = {
@@ -41,12 +41,12 @@ fun BottomNavigationBar(navController: NavController, cartItemCount: Int) {
                             }
                         }) {
                             Icon(
-                                painter = painterResource(id = R.drawable.baseline_add_shopping_cart_24),
+                                painter = painterResource(id = R.drawable.baseline_add_shopping_cart_24), // Replace with actual icon
                                 contentDescription = "Cart"
                             )
                         }
                         "profile" -> Icon(
-                            painter = painterResource(id = R.drawable.baseline_admin_panel_settings_24),
+                            painter = painterResource(id = R.drawable.baseline_admin_panel_settings_24), // Replace with actual icon
                             contentDescription = "Profile"
                         )
                     }

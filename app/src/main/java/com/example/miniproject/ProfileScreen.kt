@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, onLogout: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,10 +28,9 @@ fun ProfileScreen(navController: NavController) {
         Text("Name: John Doe")
         Text("Email: johndoe@example.com")
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            navController.navigate("settingsScreen") // Navigate to a settings screen
-        }) {
-            Text("Settings")
+
+        Button(onClick = onLogout) {
+            Text("Log Out")
         }
     }
 }

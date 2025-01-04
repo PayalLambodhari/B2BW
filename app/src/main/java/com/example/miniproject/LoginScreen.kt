@@ -161,7 +161,7 @@ fun LoginScreen(navController: NavController, onLoginSuccess: () -> Unit) {
     }
 }
 private fun isValidCredentials(email: String, password: String): Boolean {
-    val emailPattern = Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")
+    val emailPattern = Regex("[a-zA-Z0-9._-]+@[a-zA-Z]+\\.[a-zA-Z]+")
     val passwordPattern = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")
     return emailPattern.matches(email) && passwordPattern.matches(password)
 }
